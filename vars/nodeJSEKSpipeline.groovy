@@ -80,49 +80,53 @@ def call (Map configMap) {
             //     }
             // }
 
-            // stage('Dependabot Security Gate') {
-            //     steps {
-            //         script {
-            //             withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+            stage('Dependabot Security Gate') {
+                when {
+                    expression { false }
+                }
 
-            //                 def response = sh(
-            //                     script: '''
-            //                         curl -s -L \
-            //                         -H "Accept: application/vnd.github+json" \
-            //                         -H "Authorization: Bearer $GITHUB_TOKEN" \
-            //                         https://api.github.com/repos/azharmd-dev/catalogue/dependabot/alerts?state=open
-            //                     ''',
-            //                     returnStdout: true
-            //                 ).trim()
+                steps {
+                    script {
+                        withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
 
-            //                 def alerts = readJSON text: response
+                            def response = sh(
+                                script: '''
+                                    curl -s -L \
+                                    -H "Accept: application/vnd.github+json" \
+                                    -H "Authorization: Bearer $GITHUB_TOKEN" \
+                                    https://api.github.com/repos/azharmd-dev/catalogue/dependabot/alerts?state=open
+                                ''',
+                                returnStdout: true
+                            ).trim()
 
-            //                 if (alerts.size() == 0) {
-            //                     echo "✅ No open Dependabot vulnerabilities found"
-            //                     return
-            //                 }
+                            def alerts = readJSON text: response
 
-            //                 echo "⚠️ Found ${alerts.size()} open Dependabot alert(s)"
+                            if (alerts.size() == 0) {
+                                echo "✅ No open Dependabot vulnerabilities found"
+                                return
+                            }
 
-            //                 def highRisk = alerts.findAll {
-            //                     it.security_advisory.severity in ['high', 'critical']
-            //                 }
+                            echo "⚠️ Found ${alerts.size()} open Dependabot alert(s)"
 
-            //                 if (highRisk.size() > 0) {
-            //                     echo "❌ High/Critical vulnerabilities detected!"
+                            def highRisk = alerts.findAll {
+                                it.security_advisory.severity in ['high', 'critical']
+                            }
 
-            //                     highRisk.each {
-            //                         echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
-            //                     }
+                            if (highRisk.size() > 0) {
+                                echo "❌ High/Critical vulnerabilities detected!"
 
-            //                     error("Pipeline failed due to security vulnerabilities")
-            //                 }
+                                highRisk.each {
+                                    echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
+                                }
 
-            //                 echo "✅ Only low/medium vulnerabilities found — pipeline continues"
-            //             }
-            //         }
-            //     }
-            // }
+                                error("Pipeline failed due to security vulnerabilities")
+                            }
+
+                            echo "✅ Only low/medium vulnerabilities found — pipeline continues"
+                        }
+                    }
+                }
+            }
 
             stage ('Build Docker image') {
                 steps {
