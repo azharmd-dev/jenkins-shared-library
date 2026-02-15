@@ -8,8 +8,8 @@ def call (Map configMap) {
         environment {
             ACCOUNT_ID = "522534289017"
             appVersion = ""
-            PROJECT = "robomart"
-            COMPONENT = "catalogue"
+            PROJECT = configMap.get("project")
+            COMPONENT = configMap.get("component")
 
         }
         options{
