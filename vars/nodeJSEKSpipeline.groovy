@@ -162,14 +162,15 @@ def call (Map configMap) {
 
             stage('Trigger Dev Deploy') {
                 steps {
-                    build job: '../../catalogue-deploy', 
-                    wait: false,
-                    propagate: false,
-                    parameters: [
-                        string(name: 'appVersion', value: "${appVersion}"),
-                        string(name: 'deploy_to', value: "dev")
-
-                    ]
+                    script {
+                        build job: "../../${COMPONENT}-deploy", 
+                            wait: false,
+                            propagate: false,
+                            parameters: [
+                                string(name: 'appVersion', value: "${appVersion}"),
+                                string(name: 'deploy_to', value: "dev")
+                        ]
+                    }
                 }
             }
 
