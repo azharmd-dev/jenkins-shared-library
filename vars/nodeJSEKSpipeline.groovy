@@ -102,18 +102,18 @@ def call (Map configMap) {
                             def alerts = readJSON text: response
 
                             if (alerts.size() == 0) {
-                                echo "✅ No open Dependabot vulnerabilities found"
+                                echo "No open Dependabot vulnerabilities found"
                                 return
                             }
 
-                            echo "⚠️ Found ${alerts.size()} open Dependabot alert(s)"
+                            echo "Found ${alerts.size()} open Dependabot alert(s)"
 
                             def highRisk = alerts.findAll {
                                 it.security_advisory.severity in ['high', 'critical']
                             }
 
                             if (highRisk.size() > 0) {
-                                echo "❌ High/Critical vulnerabilities detected!"
+                                echo "High/Critical vulnerabilities detected!"
 
                                 highRisk.each {
                                     echo "Package: ${it.dependency.package.name} | CVE: ${it.security_advisory.cve_id}"
@@ -122,7 +122,7 @@ def call (Map configMap) {
                                 error("Pipeline failed due to security vulnerabilities")
                             }
 
-                            echo "✅ Only low/medium vulnerabilities found — pipeline continues"
+                            echo "Only low/medium vulnerabilities found — pipeline continues"
                         }
                     }
                 }
