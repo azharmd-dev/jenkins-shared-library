@@ -163,7 +163,7 @@ def call (Map configMap) {
             stage('Trigger Dev Deploy') {
                 steps {
                     script {
-                        build job: "../../${COMPONENT}-deploy", 
+                        build job: "../${COMPONENT}-deploy", 
                             wait: false,
                             propagate: false,
                             parameters: [
