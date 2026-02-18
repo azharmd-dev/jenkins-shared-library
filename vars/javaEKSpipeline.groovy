@@ -22,7 +22,7 @@ def call (Map configMap) {
                 steps {
                     script {
                         def pom = readMavenPom file: 'pom.xml'
-                        appVersion = pom.version
+                        env.appVersion = pom.version
                         echo "app version is : ${appVersion}"
 
                     }
@@ -133,9 +133,9 @@ def call (Map configMap) {
                         withAWS(region:'us-east-1', credentials: 'aws-creds') {
                             sh """
                                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-                                docker build -t ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
+                                docker build -t ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion} .
                                 docker images
-                                docker push ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                                docker push ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion}
 
                             """    
                         }
@@ -166,7 +166,7 @@ def call (Map configMap) {
                             wait: false,
                             propagate: false,
                             parameters: [
-                                string(name: 'appVersion', value: "${appVersion}"),
+                                string(name: 'appVersion', value: "${env.appVersion}"),
                                 string(name: 'deploy_to', value: "dev")
                         ]
                     }
