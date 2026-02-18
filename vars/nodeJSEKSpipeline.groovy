@@ -167,7 +167,7 @@ def call (Map configMap) {
                             wait: false,
                             propagate: false,
                             parameters: [
-                                string(name: 'appVersion', value: "${appVersion}"),
+                                string(name: 'appVersion', value: "${env.appVersion}"),
                                 string(name: 'deploy_to', value: "dev")
                         ]
                     }
