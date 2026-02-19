@@ -10,7 +10,7 @@ def call (Map configMap) {
             appVersion = ""
             PROJECT = configMap.get("project")
             COMPONENT = configMap.get("component")
-            // NOTIFY_EMAIL = credentials('notification-email')
+            NOTIFY_EMAIL = credentials('notification-email')
 
         }
         options{
@@ -221,8 +221,8 @@ def call (Map configMap) {
 
                     Build URL: ${BUILD_URL}
                     """,
-                    to: "pkpk34366@gmail.com",
-                    from: "pkpk34366@gmail.com" 
+                    to: "${NOTIFY_EMAIL}"
+                    // from: "pkpk34366@gmail.com" 
                 )
             }
 
@@ -243,8 +243,8 @@ def call (Map configMap) {
                     Please check logs immediately.
                     Build URL: ${BUILD_URL}
                     """,
-                    to: "pkpk34366@gmail.com",
-                    from: "pkpk34366@gmail.com" 
+                    to: "${NOTIFY_EMAIL}"
+                    // from: "pkpk34366@gmail.com" 
                 )
             }
         }
