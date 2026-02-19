@@ -221,7 +221,7 @@ def call (Map configMap) {
 
                     Build URL: ${BUILD_URL}
                     """,
-                    to: "${NOTIFY_EMAIL}"
+                    to: "$NOTIFY_EMAIL"
                 )
             }
 
@@ -242,7 +242,7 @@ def call (Map configMap) {
                     Please check logs immediately.
                     Build URL: ${BUILD_URL}
                     """,
-                    to: "${NOTIFY_EMAIL}"
+                    to: "$NOTIFY_EMAIL"
                 )
             }
         }
