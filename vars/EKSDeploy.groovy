@@ -13,6 +13,10 @@ def call (Map configMap){
             deploy_to = configMap.get("deploy_to")
             REGION = "us-east-1"
             NOTIFY_EMAIL = credentials('notification-email')
+            HELM_REVISION = "N/A"
+            HELM_STATUS = "FAILED BEFORE REVISION FETCH"
+            ROLLBACK_REVISION = "AUTO ROLLBACK BY HELM"
+
 
         }
         options {
