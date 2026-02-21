@@ -10,6 +10,7 @@ def call (Map configMap) {
             appVersion = ""
             PROJECT = configMap.get("project")
             COMPONENT = configMap.get("component")
+            NOTIFY_EMAIL = credentials('notification-email')
 
         }
         options{
