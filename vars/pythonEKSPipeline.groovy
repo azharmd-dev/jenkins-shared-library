@@ -207,7 +207,7 @@ def call (Map configMap) {
                 echo "Build is success"
 
                 emailext (
-                    subject: "SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
+                    subject: "BUILD SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
                     body: """
                     🎉 GOOD NEWS 🎉
 
