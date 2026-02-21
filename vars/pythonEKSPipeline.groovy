@@ -173,27 +173,6 @@ def call (Map configMap) {
                 }
             }
 
-            stage ('Testing') {
-                steps {
-                    script {
-                        sh  """
-                        echo "Testing is Success"
-                        sleep 1
-                    """
-                    }
-                }
-            }
-
-            stage ('Deploying') {
-                steps {
-                    script {
-                        sh  """
-                        echo "Deploying is Success"
-                        sleep 1
-                    """
-                    }
-                }
-            }
         }
 
         post {
@@ -229,7 +208,7 @@ def call (Map configMap) {
                 echo "Build is failure"
 
                 emailext (
-                    subject: "FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
+                    subject: "BUILD FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
                     body: """
                     ❌ BUILD FAILED ❌
 
@@ -246,19 +225,6 @@ def call (Map configMap) {
                 )
             }
         }
-
-        // post {
-        //     always {
-        //         echo "Post Message after stages"
-        //         cleanWs()
-        //     }
-        //     success {
-        //         echo "Build is success"
-        //     }
-        //     failure {
-        //         echo "Build is failure"
-        //     }
-        // }
         
     }
 }

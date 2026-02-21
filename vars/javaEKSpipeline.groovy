@@ -175,38 +175,55 @@ def call (Map configMap) {
                 }
             }
 
-            stage ('Testing') {
-                steps {
-                    script {
-                        sh  """
-                        echo "Testing is Success"
-                        sleep 1
-                    """
-                    }
-                }
-            }
-
-            stage ('Deploying') {
-                steps {
-                    script {
-                        sh  """
-                        echo "Deploying is Success"
-                        sleep 1
-                    """
-                    }
-                }
-            }
         }
         post {
             always {
                 echo "Post Message after stages"
                 cleanWs()
             }
+
             success {
+                
                 echo "Build is success"
+
+                emailext (
+                    subject: "BUILD SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
+                    body: """
+                    🎉 GOOD NEWS 🎉
+
+                    Job Name: ${JOB_NAME}
+                    Build Number: ${BUILD_NUMBER}
+                    Project: ${PROJECT}
+                    Component: ${COMPONENT}
+                    Version: ${appVersion}
+
+                    Status: SUCCESS ✅
+
+                    Build URL: ${BUILD_URL}
+                    """,
+                    to: "${NOTIFY_EMAIL}"
+                )
             }
+
             failure {
                 echo "Build is failure"
+
+                emailext (
+                    subject: "BUILD FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
+                    body: """
+                    ❌ BUILD FAILED ❌
+
+                    Job Name: ${JOB_NAME}
+                    Build Number: ${BUILD_NUMBER}
+                    Project: ${PROJECT}
+                    Component: ${COMPONENT}
+                    Version: ${appVersion}
+
+                    Please check logs immediately.
+                    Build URL: ${BUILD_URL}
+                    """,
+                    to: "${NOTIFY_EMAIL}"
+                )
             }
         }
         
