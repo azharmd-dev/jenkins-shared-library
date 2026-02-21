@@ -164,8 +164,8 @@ def call (Map configMap) {
                 steps {
                     script {
                         build job: "../${COMPONENT}-deploy", 
-                            wait: false,
-                            propagate: false,
+                            wait: true,
+                            propagate: true,
                             parameters: [
                                 string(name: 'appVersion', value: "${appVersion}"),
                                 string(name: 'deploy_to', value: "dev")
